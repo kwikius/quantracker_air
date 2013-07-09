@@ -1,0 +1,22 @@
+quantracker_air is an airborne unit for the quantracker that uses the FrSky telemetry system to send the position data back to the tracker.
+The unit is based on an Arduino Pro Mini 5v 16 MHz unit
+The Position data is acquired direct from a GPS unit attached to the airborne unit.
+
+Prerequisites
+   applications
+      avr-gcc version 4.7 or higher
+      The Arduino programming enevironment
+      avrdude - avr programmer
+
+   The project requires the following libraries
+
+   My quan physical quantities library - https://github.com/kwikius/quan-trunk
+   
+   The Arduino C/C++ source download http://arduino.cc/en/main/software
+
+   Please note that though the project uses the Arduino source it doesnt use the Arduino environment since the project requires a newer version of gcc.
+   The project also requires pre-existing external libraries which doesnt appear too be supported by the Arduino as far as I understand it.
+
+   You can compile and build the project using gnu-make and the provided Makefile. You will need to hack the Makefile to change various directoroes and settings.
+   See the Makefile for details.
+   use "make upload" to upload to the board
