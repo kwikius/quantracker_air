@@ -1,6 +1,7 @@
 quantracker_air is an airborne unit for the quantracker that uses the FrSky telemetry system to send the position data back to the tracker.
 The unit is based on an Arduino Pro Mini 5v 16 MHz unit
 The Position data is acquired direct from a GPS unit attached to the airborne unit.
+Currently only the Mediatek MTK3329 at 38400 baud is supported ( The unit that came with my Remzibi OSD)
 
 Prerequisites
    applications
