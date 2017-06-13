@@ -18,8 +18,9 @@
 
 ###########################################################
 ## You will need to modify these three variables for your system
-ARDUINO_PATH = /home/andy/arduino-1.0.4/
-QUAN_INCLUDE_PATH = /home/andy/website/quan-trunk/
+## You need arduino-1.0.4
+ARDUINO_PATH = /home/andy/Arduino/old/arduino-1.0.4/
+QUAN_INCLUDE_PATH = /home/andy/cpp/projects/quan-trunk/
 ARDUINO_PORT = /dev/ttyUSB0
 ###########################################################
 
@@ -28,6 +29,7 @@ AVRDUDE_MPU = m328p
 ARDUINO_BURNRATE = 57600
 ARDUINO_FCPU = 16000000UL
 
+#ARDUINO_SRC_PATH = $(ARDUINO_PATH)hardware/arduino/cores/arduino/
 ARDUINO_SRC_PATH = $(ARDUINO_PATH)hardware/arduino/cores/arduino/
 ARDUINO_EXTRA_PATH = $(ARDUINO_PATH)hardware/arduino/variants/standard/
 
@@ -53,7 +55,7 @@ PROG = avrdude
 
 CFLAGS_C = -Wall -mmcu=$(ARDUINO_MCU) $(INCLUDES) -ffunction-sections -fdata-sections -DARDUINO -DF_CPU=$(ARDUINO_FCPU) -Os 
 
-CFLAGS_CPP = $(CFLAGS_C) --std=c++11 -fno-rtti -fno-exceptions 
+CFLAGS_CPP = $(CFLAGS_C) --std=c++11 -fno-rtti -fno-exceptions -Wfatal-errors -Wno-unused-local-typedefs
 
 MAPFILE =  $(ELFFILE).map
 
@@ -62,11 +64,11 @@ LFLAGS = -mmcu=$(ARDUINO_MCU) -Wl,-Map=$(MAPFILE),--cref -Wl,--gc-sections -Wl,-
 all : test
 
 upload : test
-	$(PROG) -p $(AVRDUDE_MPU) -c arduino -P $(ARDUINO_PORT) -b $(ARDUINO_BURNRATE) -D -Uflash:w:/$(HEXFILE):i
+	$(PROG) -p $(AVRDUDE_MPU) -c arduino -P $(ARDUINO_PORT) -b $(ARDUINO_BURNRATE) -D -Uflash:w:./$(HEXFILE):i
 
 test : $(ELFFILE)
 	$(CP) -O ihex -R .eeprom -R .eesafe $(ELFFILE) $(HEXFILE)
-#	$(CP) --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(ELFFILE) $(EEPHEXFILE)
+	$(CP) --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(ELFFILE) $(EEPHEXFILE)
 	$(OD) -h -S $(ELFFILE) > $(LISTFILE)
 	
 $(arduino_cpp_objects) : %.o : $(ARDUINO_SRC_PATH)%.cpp
