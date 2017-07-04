@@ -26,6 +26,7 @@
 static const uint8_t FrSkySerOut = 9; // FrSky serial output pin
 static const int32_t clock_freq = 16000000;
 static bool invert_output  = false;  // to invert pulse ouput sense
+// gives enough for 0.5 sec buffer in telem mode
 static quan::fifo<asynch_tx_char_type,100> output_fifo;
 
 static inline void set_mark_on_match()
@@ -62,9 +63,7 @@ void asynch_tx_setup(int32_t baudrate_in, bool inverted_output_in)
 
   TCNT1 = 0;
 
-  //to get baudrate 
-  // TODO subtract 1 ?
-  OCR1A = (clock_freq / baudrate_in) + (( ( (clock_freq % baudrate_in) - (baudrate_in / 2) ) <= 0)?0:1);
+  OCR1A = ((clock_freq / baudrate_in) + (( ( (clock_freq % baudrate_in) - (baudrate_in / 2) ) <= 0)?0:1)) - 1;
   // turn on CTC mode conjunction with OCR1A
   TCCR1B |= (1 << WGM12);
     // Set  /1 prescaler so clock is 16 MHz

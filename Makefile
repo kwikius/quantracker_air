@@ -35,7 +35,7 @@ ARDUINO_EXTRA_PATH = $(ARDUINO_PATH)hardware/arduino/variants/standard/
 
 arduino_cpp_objects = CDC.o HardwareSerial.o Print.o Stream.o  WString.o main.o new.o 
 arduino_c_objects = WInterrupts.o wiring.o wiring_digital.o
-local_objects = aircraft.o asynch_tx.o frsky.o gps.o main_loop.o
+local_objects = aircraft.o asynch_tx.o output.o gps.o main_loop.o
 
 OBJECTS = $(arduino_cpp_objects) $(arduino_c_objects) $(local_objects)
 

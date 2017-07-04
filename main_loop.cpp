@@ -22,7 +22,7 @@
 #include "aircraft.hpp"
 #include "asynch_tx.hpp"
 #include "gps.hpp"
-#include "frsky.hpp"
+#include "output.hpp"
 
 
 #if defined __AVR_ATmega32U4__
@@ -168,13 +168,13 @@ void setup()
    cli();
    //##############
    // for FrSky invert the output
-   asynch_tx_setup(9600, true);
+   asynch_tx_setup(9600, false);
    //##################
    sei();
    // help the far end to sync
-   for ( int8_t i = 0; i < 3; ++i){
-      asynch_tx_write_byte(0x7E);
-   }
+//   for ( int8_t i = 0; i < 3; ++i){
+//      asynch_tx_write_byte(0x7E);
+//   }
  
    delay(500);
  
@@ -184,6 +184,7 @@ void setup()
    delay(500);
 
 // wait here blinking led slowly until there are 5 satellites...
+#if (1)
    unsigned long loop_time = 0;
    bool led_state = false;
    for(;;){
@@ -204,6 +205,7 @@ void setup()
          break; // GO!
       }
    }
+#endif
 }
 
 void loop()
@@ -212,11 +214,13 @@ void loop()
    static unsigned long led_time = 0;
    static bool led_state = true;
    
+#if (1)
    read_GPS();
+#endif
  
-   if ( millis() - loop_time > 19){
+   if ( (millis() - loop_time) >= get_update_period_ms()){
      loop_time = millis();
-     FrSky_send_message();
+     output_message();
    }
 
    // blink if new data else led stops

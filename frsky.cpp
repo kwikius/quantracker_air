@@ -19,9 +19,11 @@
 #if defined(ARDUINO)
 #include <Arduino.h>
 #endif
-#include "frsky.hpp"
+
 #include "aircraft.hpp"
 #include "asynch_tx.hpp"
+
+uint16_t get_update_period_ms(){ return 20;}
 
 namespace {
 
